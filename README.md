@@ -1,4 +1,4 @@
-# itoll-core itoll.shop 
+# afzaliwp-boilerplate
  Run npm install if cloning the repo.
  
  Run gulp or npx gulp to render assets
