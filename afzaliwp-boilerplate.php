@@ -42,10 +42,10 @@ final class Boiler_Plate {
 	}
 
 	public static function get_instance() {
-		$cls = Core::class;
+		$cls = Boiler_Plate::class;
 
 		if ( ! isset( self::$instances[ $cls ] ) ) {
-			self::$instances[ $cls ] = new Core();
+			self::$instances[ $cls ] = new Boiler_Plate();
 		}
 
 		return self::$instances[ $cls ];
