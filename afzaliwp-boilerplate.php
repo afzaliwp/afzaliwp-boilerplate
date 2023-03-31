@@ -11,10 +11,11 @@
 namespace AfzaliWP;
 
 use Exception;
+use Afzaliwp\Boiler_Plate\Includes\Control_Panel\Control_Panel;
 
 defined( 'ABSPATH' ) || die();
 
-require 'functions.php';
+require_once 'functions.php';
 
 final class Boiler_Plate {
 
@@ -24,6 +25,9 @@ final class Boiler_Plate {
 		spl_autoload_register( 'afzaliwp_boilerplate_autoload' );
 
 		$this->define_constants();
+		add_action( 'admin_menu', [ $this, 'admin_menus' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register_styles_and_scripts' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'register_admin_styles_and_scripts' ] );
 
 		/**
 		 * TODO: Other stuff like method calls or hooks goes here.
@@ -79,22 +83,15 @@ final class Boiler_Plate {
 	public function admin_menus() {
 		/**
 		 * TODO: You can add admin menus and option pages here.
-		 * Hint: Call this method in constructure.
+		 * Hint: Call this method in constructor.
 		 */
 		add_options_page(
 			esc_html__( 'Admin menu Title', 'afzaliwp-bp' ),
 			esc_html__( 'Admin menu Title', 'afzaliwp-bp' ),
 			'manage_options',
 			'afzaliwp_bp',
-			[ $this, 'option_page_callback' ]
+			[ Control_Panel::class, 'render_template' ]
 		);
-	}
-
-	public function option_page_callback() {
-		/**
-		 * TODO: Create a class for you option page and call the method that is responsible for the html of the option or menu page.
-		 */
-		// Option_Page::render_page();
 	}
 
 	public function register_styles_and_scripts() {
@@ -120,7 +117,7 @@ final class Boiler_Plate {
 				'homeUrl' => get_bloginfo( 'url' ),
 				// 'checkoutUrl' => wc_get_checkout_url(), //If WooCommerce is included in your works and need to use checkout url in ajax.
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce' => wp_create_nonce( 'afzaliwp-bp-nonce' ),
+				'nonce'   => wp_create_nonce( 'afzaliwp-bp-nonce' ),
 			]
 		);
 	}
@@ -133,9 +130,24 @@ final class Boiler_Plate {
 			AFZALIWP_BP_ASSETS_VERSION
 		);
 
+		wp_enqueue_style(
+			'afzaliwp-bp-control-panel-style',
+			AFZALIWP_BP_URL . 'includes/control-panel/dist/control-panel.css',
+			'',
+			AFZALIWP_BP_ASSETS_VERSION
+		);
+
 		wp_enqueue_script(
 			'afzaliwp-bp-admin-script',
 			AFZALIWP_BP_ASSETS_URL . 'admin.min.js',
+			[],
+			AFZALIWP_BP_ASSETS_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			'afzaliwp-bp-control-panel-script',
+			AFZALIWP_BP_URL . 'includes/control-panel/dist/control-panel.js',
 			[],
 			AFZALIWP_BP_ASSETS_VERSION,
 			true
@@ -145,9 +157,9 @@ final class Boiler_Plate {
 	public function woocommerce_related() {
 		/**
 		 * TODO: If WooCommerce is icluded in you works, you can create the classes related to WC here.
-		 * Hint: 
-		 * 		- Just create an instance of the class like new WC_Handler(); and add your needed functionality to the costructor of the class.
-		 * 		- Call this method in the constructor.
+		 * Hint:
+		 *        - Just create an instance of the class like new WC_Handler(); and add your needed functionality to the costructor of the class.
+		 *        - Call this method in the constructor.
 		 */
 	}
 
@@ -158,6 +170,7 @@ final class Boiler_Plate {
 		define( 'AFZALIWP_BP_TPL_DIR', trailingslashit( AFZALIWP_BP_DIR . 'templates' ) );
 		define( 'AFZALIWP_BP_WC_TPL_DIR', trailingslashit( AFZALIWP_BP_DIR . 'woocommerce' ) );
 		define( 'AFZALIWP_BP_INC_DIR', trailingslashit( AFZALIWP_BP_DIR . 'includes' ) );
+		define( 'AFZALIWP_BP_LANGUAGES', trailingslashit( AFZALIWP_BP_DIR . 'languages' ) );
 		define( 'AFZALIWP_BP_ASSETS_URL', trailingslashit( AFZALIWP_BP_URL . 'assets/dist' ) );
 		define( 'AFZALIWP_BP_IMAGES', trailingslashit( AFZALIWP_BP_URL . 'assets/images' ) );
 		define( 'AFZALIWP_BP_JSON', trailingslashit( AFZALIWP_BP_ASSETS_URL . 'json' ) );

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TODO: Uncomment the codes below. You can use them to create an option page.
+ * TODO: Uncomment the codes below. You can use them to create an option page (generally a template).
  */
 
 // namespace Afzaliwp\Boiler_Plate\Templates;

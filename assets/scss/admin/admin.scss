@@ -1,4 +1,5 @@
 // Import you other smaller and organized scss files here just like the example.
 // The name of smaller files will have a "_" at the start. Example: _option-panel.scss
 
-// @import "option-page";
+// You can add the css of the control panel here or you can add it in the react folder.
+@import "control-panel/app";

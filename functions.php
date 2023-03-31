@@ -4,7 +4,7 @@ function afzaliwp_boilerplate_autoload( $class_name ) {
 		return;
 	}
 
-	$file = str_replace( [ '_', 'Afzaliwp\Boiler_Plate', '\\' ], [ '-', __DIR__, '/' ], $class_name ) . '.php';
+	$file = str_replace( [ 'Afzaliwp\Boiler_Plate', '_', '\\' ], [ __DIR__, '-', '/' ], $class_name ) . '.php';
 
 	require_once strtolower( $file );
 }

@@ -9,6 +9,10 @@ import rename from 'gulp-rename';
 import cleanCSS from 'gulp-clean-css';
 import zip from 'gulp-zip';
 import {deleteAsync} from 'del';
+import browserify from 'browserify';
+import source from 'vinyl-source-stream';
+import buffer from 'vinyl-buffer';
+import cssModulesify from 'css-modulesify';
 
 const sass = gulpSass(dartSass);
 
@@ -29,6 +33,10 @@ const paths = {
         src: 'assets/js/admin/*.js',
         dest: 'assets/dist'
     },
+    controlPanelScripts: {
+        src: 'includes/control-panel',
+        dest: 'includes/control-panel/dist'
+    },
 };
 
 const watchPath = {
@@ -47,6 +55,10 @@ const watchPath = {
     adminScripts: {
         src: 'assets/js/admin/*.js',
         dest: 'assets/dist'
+    },
+    controlPanelScripts: {
+        src: 'includes/control-panel',
+        dest: 'includes/control-panel/dist'
     },
 }
 
@@ -107,12 +119,36 @@ export function adminScripts() {
         .pipe(gulp.dest(paths.adminScripts.dest));
 }
 
+// This task is for react parts of the plugin. you can copy and paste this task and edit it for other react directories.
+// You can disable uglify to increase the speed of the task (for development purposes).
+export function controlPanelScripts() {
+    return browserify({
+        entries: './includes/control-panel/src/index.jsx',
+        extensions: ['.jsx'],
+        debug: true
+    }).plugin(cssModulesify, {
+        rootDir: './includes/control-panel',
+        output: './includes/control-panel/dist/control-panel.css'
+    })
+
+        .transform(babelify.configure({
+            presets: ['@babel/preset-env', '@babel/preset-react']
+        }))
+        .bundle()
+        .pipe(source('control-panel.js'))
+        .pipe(buffer())
+        .pipe(uglify())
+        .pipe(gulp.dest('./includes/control-panel/dist'));
+}
+
 export function watch() {
     gulp.watch(watchPath.scripts.src, scripts);
     gulp.watch(watchPath.styles.src, styles);
 
     gulp.watch(watchPath.adminScripts.src, adminScripts);
     gulp.watch(watchPath.adminStyles.src, adminStyles);
+
+    gulp.watch(watchPath.controlPanelScripts.src, controlPanelScripts);
 }
 
 function release() {
@@ -121,6 +157,7 @@ function release() {
         '!release/**',
         '!assets/js/**',
         '!assets/scss/**',
+        '!includes/control-panel/src/**', // the control panel jsx files
         '!README.md',
         '!cypress/**',
         '!build/**',
@@ -130,18 +167,18 @@ function release() {
         '!wpcs/**',
         '!*.{lock,json,xml,js,yml}',
     ])
-        .pipe(gulp.dest('release/itoll-core', {mode: '0755'}));
+        .pipe(gulp.dest('release/afzaliwp-boilerplate', {mode: '0755'}));
 }
 
 function releaseZip() {
     return gulp.src([
         'release/**',
     ])
-        .pipe(zip('itoll-core.zip'))
+        .pipe(zip('afzaliwp-boilerplate.zip'))
         // eslint-disable-next-line no-undef
         .pipe(gulp.dest('./').on('end', () => {
-            // Move files from release/itoll-core to release/
-            gulp.src('release/itoll-core/**')
+            // Move files from release/afzaliwp-boilerplate to release/
+            gulp.src('release/afzaliwp-boilerplate/**')
                 .pipe(gulp.dest('release').on('end', () => deleteAsync('release')));
         }));
 }
@@ -155,7 +192,8 @@ const build = gulp.series(
         styles,
         scripts,
         adminStyles,
-        adminScripts
+        adminScripts,
+        controlPanelScripts
     ),
     release,
     releaseZip

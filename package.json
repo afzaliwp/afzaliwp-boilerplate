@@ -18,11 +18,13 @@
   },
   "homepage": "https://github.com/afzaliwp/itoll-core#readme",
   "devDependencies": {
-    "@babel/core": "^7.21.0",
+    "@babel/core": "^7.21.3",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
     "@babel/register": "^7.18.9",
     "babelify": "^10.0.0",
     "browserify": "^17.0.0",
+    "css-modulesify": "^0.28.0",
     "del": "^7.0.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
@@ -34,9 +36,14 @@
     "gulp-sass": "^5.1.0",
     "gulp-scss": "^1.4.0",
     "gulp-uglify": "^3.0.2",
-    "sass": "^1.57.1"
+    "reactify": "^1.1.1",
+    "sass": "^1.57.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "gulp-zip": "^5.1.0"
+    "gulp-zip": "^5.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
