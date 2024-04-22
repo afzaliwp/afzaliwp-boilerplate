@@ -1,15 +1,18 @@
 import gulp from 'gulp';
-import dartSass from 'sass';
+import * as dartSass from 'sass';
 import gulpSass from 'gulp-sass';
-import babelify from 'babelify';
+import * as babelify from 'babelify';
 import bro from 'gulp-bro';
 import concat from 'gulp-concat';
 import uglify from 'gulp-uglify';
 import rename from 'gulp-rename';
 import cleanCSS from 'gulp-clean-css';
+import rtlcss from 'gulp-rtlcss';
 import zip from 'gulp-zip';
-import {deleteAsync} from 'del';
+import { deleteAsync } from 'del';
+import browserSync from 'browser-sync';
 
+const server = browserSync.create();
 const sass = gulpSass(dartSass);
 
 const paths = {
@@ -49,6 +52,14 @@ const watchPath = {
         dest: 'assets/dist'
     },
 }
+
+function serve(done) {
+    server.init({
+        proxy: "https://example.local", //replace with your local url
+    });
+    done();
+}
+
 
 /* Not all tasks need to use streams, a gulpfile is just another node program
  * and you can use all packages available on npm, but it must return either a
@@ -107,12 +118,18 @@ export function adminScripts() {
         .pipe(gulp.dest(paths.adminScripts.dest));
 }
 
-export function watch() {
-    gulp.watch(watchPath.scripts.src, scripts);
-    gulp.watch(watchPath.styles.src, styles);
+function reload(done) {
+    server.reload();
+    done();
+}
 
-    gulp.watch(watchPath.adminScripts.src, adminScripts);
-    gulp.watch(watchPath.adminStyles.src, adminStyles);
+export function watch() {
+    serve(() => {});
+    gulp.watch(watchPath.scripts.src, gulp.series(scripts, reload));
+    gulp.watch(watchPath.styles.src, gulp.series(styles, reload));
+
+    gulp.watch(watchPath.adminScripts.src, gulp.series(adminScripts, reload));
+    gulp.watch(watchPath.adminStyles.src, gulp.series(adminStyles, reload));
 }
 
 function release() {
