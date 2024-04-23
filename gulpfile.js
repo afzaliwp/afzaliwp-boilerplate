@@ -11,6 +11,7 @@ import rtlcss from 'gulp-rtlcss';
 import zip from 'gulp-zip';
 import { deleteAsync } from 'del';
 import browserSync from 'browser-sync';
+import sourcemaps from 'gulp-sourcemaps';
 
 const server = browserSync.create();
 const sass = gulpSass(dartSass);
@@ -71,50 +72,59 @@ export const clean = () => deleteAsync(['assets/dist/*', 'release', '*.zip']);
  * Define our tasks using plain functions
  */
 export function styles() {
-    return gulp.src(paths.styles.src)
+    return gulp.src(paths.styles.src, { allowEmpty: true })
+        .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(cleanCSS())
         .pipe(rename({
             basename: 'frontend',
             suffix: '.min'
         }))
+        .pipe(rtlcss())
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.styles.dest));
 }
 
 export function adminStyles() {
-    return gulp.src(paths.adminStyles.src)
+    return gulp.src(paths.adminStyles.src, { allowEmpty: true })
+        .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(cleanCSS())
         .pipe(rename({
             basename: 'admin',
             suffix: '.min'
         }))
+        .pipe(rtlcss())
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.adminStyles.dest));
 }
 
 export function scripts() {
-    return gulp.src(paths.scripts.src, {sourcemaps: true})
+    return gulp.src(paths.scripts.src, { sourcemaps: true, allowEmpty: true })
+        .pipe(sourcemaps.init())
         .pipe(bro({
             transform: [
-                babelify.configure({presets: ['@babel/preset-env']}),
+                [babelify.configure({ presets: ['@babel/preset-env'] }), { global: true }],
             ],
         }))
         .on('error', console.log)
-        .pipe(uglify())
         .pipe(concat('frontend.min.js'))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.scripts.dest));
 }
 
 export function adminScripts() {
-    return gulp.src(paths.adminScripts.src, {sourcemaps: true})
+    return gulp.src(paths.adminScripts.src, { sourcemaps: true, allowEmpty: true })
+        .pipe(sourcemaps.init())
         .pipe(bro({
             transform: [
-                babelify.configure({presets: ['@babel/preset-env']}),
+                babelify.configure({ presets: ['@babel/preset-env'] }),
             ],
         }))
         .on('error', console.log)
         .pipe(uglify())
         .pipe(concat('admin.min.js'))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(paths.adminScripts.dest));
 }
 
