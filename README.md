@@ -12,3 +12,7 @@
  ```npx gulp``` to make a release and render all assets
  
  ```npx gulp watch``` to make it ready for development and render assets on each scss and js change
+
+Latest Changes:
+1. Add browsersync to auto reload on watch task
+2. Add sourcemap to generate map files for css and js files
