@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/afzaliwp/itoll-core.git"
+    "url": "git+https://github.com/afzaliwp/afzaliwp-boilerplate.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/afzaliwp/itoll-core/issues"
+    "url": "https://github.com/afzaliwp/afzaliwp-boilerplate/issues"
   },
-  "homepage": "https://github.com/afzaliwp/itoll-core#readme",
+  "homepage": "https://github.com/afzaliwp/afzaliwp-boilerplate#readme",
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
