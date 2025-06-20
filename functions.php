@@ -1,13 +1,13 @@
 <?php
-function afzaliwp_boilerplate_autoload( $class_name ) {
-	if ( ! str_contains( $class_name, 'Afzaliwp\Boiler_Plate' ) ) {
+function afzaliwp_gs_gravity_autoload( $class_name ) {
+	if ( ! str_contains( $class_name, 'AfzaliWP\GS_Gravity' ) ) {
 		return;
 	}
 
 		$file = str_replace(
 		        [
 			        '_',
-			        strtolower( 'Afzaliwp\Boiler-Plate' ),
+			        strtolower( 'AfzaliWP\GS-Gravity' ),
 			        '\\',
 		        ],
 		        [
