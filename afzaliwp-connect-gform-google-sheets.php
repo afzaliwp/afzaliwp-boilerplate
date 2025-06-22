@@ -12,6 +12,7 @@
 
 namespace AfzaliWP;
 
+use AfzaliWP\GS_Gravity\Includes\Backend\Connection_Test;
 use AfzaliWP\GS_Gravity\Includes\Backend\Options;
 use Exception;
 
@@ -127,6 +128,7 @@ final class GS_Gravity {
 
 	private function handle_backend() {
 		new Options();
+		new Connection_Test();
 	}
 
 	private function handle_frontend() {
