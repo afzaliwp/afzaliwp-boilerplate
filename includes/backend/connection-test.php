@@ -34,6 +34,8 @@ class Connection_Test {
 			$body = wp_remote_retrieve_body( $response );
 			$code = wp_remote_retrieve_response_code( $response );
 
+			mylog($body);
+			mylog($code);
 			if ( $code === 200 ) {
 				$data = json_decode( $body );
 				// Expecting the Google Apps Script to return a JSON with a "success" property

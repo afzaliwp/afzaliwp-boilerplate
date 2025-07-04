@@ -13,7 +13,9 @@
 namespace AfzaliWP;
 
 use AfzaliWP\GS_Gravity\Includes\Backend\Connection_Test;
+use AfzaliWP\GS_Gravity\Includes\Backend\Fields_Mapping;
 use AfzaliWP\GS_Gravity\Includes\Backend\Options;
+use AfzaliWP\GS_Gravity\Includes\GForm;
 use Exception;
 
 defined( 'ABSPATH' ) || die();
@@ -39,6 +41,8 @@ final class GS_Gravity {
 		} else {
 			$this->handle_frontend();
 		}
+
+		new GForm();
 
 		add_action( 'admin_enqueue_scripts', [
 			$this,
@@ -129,6 +133,7 @@ final class GS_Gravity {
 	private function handle_backend() {
 		new Options();
 		new Connection_Test();
+		new Fields_Mapping();
 	}
 
 	private function handle_frontend() {
