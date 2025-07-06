@@ -29,11 +29,15 @@ $form    = \GFAPI::get_form( $form_id );
                 <button type="button" class="tab-button" data-tab="fields_mapping">
 					<?php _e( 'Fields Mapping', 'afzaliwp-gs' ); ?>
                 </button>
+                <button type="button" class="tab-button" data-tab="integration_guide">
+					<?php _e( 'Integration Guide', 'afzaliwp-gs' ); ?>
+                </button>
             </div>
 
             <div class="contents">
 				<?php include_once AFZALIWP_GS_TPL_DIR . 'connection-test.php'; ?>
 				<?php include_once AFZALIWP_GS_TPL_DIR . 'fields-mapping.php'; ?>
+				<?php include_once AFZALIWP_GS_TPL_DIR . 'integration-guide.php'; ?>
             </div>
         </div>
     </main>
