@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Gravity Forms Integration With Google Sheet\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-12 18:13+0000\n"
-"PO-Revision-Date: 2025-05-12 18:36+0000\n"
+"PO-Revision-Date: 2025-07-06 15:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: فارسی\n"
 "Language: fa_IR\n"
@@ -15,11 +15,119 @@ msgstr ""
 "X-Loco-Version: 2.6.14; wp-6.8.1\n"
 "X-Domain: afzaliwp-gs"
 
+#: templates/fields-mapping.php:81
+msgid "(Required)"
+msgstr "(الزامی)"
+
 #. Description of the plugin
 msgid "A plugin to sync the gravity forms entries to the Google sheet easily."
 msgstr "اتصال سریع و آسان به گوگل شیت از طریق گرویتی فرم"
 
-#: templates/options.php:9
+#: templates/fields-mapping.php:142
+msgid "Add Custom Field"
+msgstr "افزودن فیلد سفارشی"
+
+#: includes/backend/connection-test.php:53
+msgid "An unexpected error happened. Please try again"
+msgstr "یک خطای غیرمنتظره رخ داد. لطفا دوباره تلاش کنید"
+
+#: templates/options.php:27
+msgid "Api Settings"
+msgstr "تنظیمات API"
+
+#: templates/fields-mapping.php:43
+msgid "Column Label"
+msgstr "عنوان ستون"
+
+#: templates/fields-mapping.php:44
+msgid "Column Value"
+msgstr "مقدار ستون"
+
+#: includes/backend/connection-test.php:46
+#, php-format
+msgid "Connection Succeed! Sheet: <strong>%s</strong>"
+msgstr "اتصال برقرار شد! شیت: <strong>%s</strong>"
+
+#: templates/integration-guide.php:23
+msgid "Copy Code"
+msgstr "کپی"
+
+#: templates/integration-guide.php:16
+msgid "Copy the code into your google sheets apps script section."
+msgstr "کد را در قسمت apps script گوگل شیت خود قرار دهید."
+
+#: templates/integration-guide.php:37
+msgid ""
+"Copy the Web App URL and paste it into the Webhook URL field to test "
+"connection"
+msgstr "آدرس Web App را کپی کرده و در قسمت تست اتصال وارد کنید."
+
+#: templates/integration-guide.php:34
+msgid "Create a new Google Sheet"
+msgstr "یک فایل گوگل شیت ایجاد کنید."
+
+#: templates/dynamic-fields.php:21
+msgid "Created By (User ID)"
+msgstr "ایجاد شده توسط (آیدی کاربر)"
+
+#: templates/dynamic-fields.php:13
+msgid "Current Date"
+msgstr "تاریخ فعلی"
+
+#: templates/dynamic-fields.php:17
+msgid "Current Time"
+msgstr "زمان فعلی"
+
+#: templates/dynamic-fields.php:29
+msgid "Date Created"
+msgstr "تاریخ ایجاد"
+
+#: templates/dynamic-fields.php:77
+msgid "Date Created (Only Date)"
+msgstr "تاریخ ایجاد (فقط تاریخ)"
+
+#: templates/dynamic-fields.php:33
+msgid "Date Updated"
+msgstr "تاریخ بروزرسانی"
+
+#: templates/dynamic-fields.php:25
+msgid "Entry ID"
+msgstr "آیدی ورودی"
+
+#: templates/fields-mapping.php:32
+msgid "Fields have been saved successfully!"
+msgstr "فیلدها با موفقیت ذخیره شدند."
+
+#: templates/options.php:30
+msgid "Fields Mapping"
+msgstr "ساختار فیلدها"
+
+#: includes/backend/fields-mapping.php:43
+msgid "Fields saved successfully."
+msgstr "فیلدها با موفقیت ذخیره شدند."
+
+#: includes/backend/connection-test.php:78
+#: includes/backend/sheet-options.php:19 includes/backend/fields-mapping.php:18
+msgid "Form ID is missing."
+msgstr "آیدی فرم وارد نشده است."
+
+#: templates/fields-mapping.php:87
+msgid "From form entry"
+msgstr "از ورودی فرم"
+
+#: includes/backend/options.php:19
+msgid "Google Sheets"
+msgstr "گوگل شیت"
+
+#: templates/integration-guide.php:13
+msgid "Google Sheets Script Guide"
+msgstr "راهنمای اسکریپت گوگل شیت"
+
+#: templates/connection-test.php:8
+msgid "Google Sheets Script Url"
+msgstr "آدرس اسکریپت گوگل شیت"
+
+#: templates/options.php:12
 msgid "Google Sheets Settings"
 msgstr "تنظیمات گوگل شیت"
 
@@ -32,10 +140,128 @@ msgstr "اتصال گرویتی فرم و گوگل شیت"
 msgid "https://afzaliwp.com"
 msgstr "https://afzaliwp.com"
 
+#: templates/integration-guide.php:46
+msgid "If you have any problems setting up the google sheet, watch this video"
+msgstr ""
+"اگر مشکلی در خصوص تنظیمات گوگل شیت دارید، لطفا این ویدیو را تماشا کنید."
+
+#: templates/options.php:33
+msgid "Integration Guide"
+msgstr "راهنمای یکپارچه سازی"
+
 #. Author of the plugin
 msgid "Mohammad Afzali"
 msgstr "محمد افضلی"
 
-#: templates/options.php:11
+#: includes/backend/connection-test.php:27
+msgid "Only Google Apps Scripts url is allowed."
+msgstr "فقط آدرس اسکریپت گوگل شیت مجاز است."
+
+#: templates/integration-guide.php:35
+msgid "Open its Script Editor (Tools > Script Editor)"
+msgstr "ویرایشگر اسکریپت را باز کنید (Tools > Script Editor)"
+
+#: templates/options.php:14 templates/options.php:36
 msgid "Options"
 msgstr "تنظیمات"
+
+#: templates/sheet-options.php:6
+msgid "Options have been saved successfully!"
+msgstr "گزینه‌ها با موفقیت ذخیره شدند!"
+
+#: templates/fields-mapping.php:42
+msgid "Order"
+msgstr "ترتیب"
+
+#: templates/integration-guide.php:36
+msgid "Paste the code above and deploy it as a Web App"
+msgstr "کد بالا را پیست کنید و به عنوان Web App فرایند deploy را انجام دهید"
+
+#: templates/dynamic-fields.php:45
+msgid "Payment Amount"
+msgstr "مبلغ پرداخت"
+
+#: templates/dynamic-fields.php:49
+msgid "Payment Date"
+msgstr "تاریخ پرداخت"
+
+#: templates/dynamic-fields.php:69
+msgid "Payment Date (Only Date)"
+msgstr "تاریخ پرداخت (فقط تاریخ)"
+
+#: templates/dynamic-fields.php:53
+msgid "Payment Status"
+msgstr "وضعیت پرداخت"
+
+#: templates/dynamic-fields.php:73
+msgid "Payment Time (Only Time)"
+msgstr "زمان پرداخت (فقط زمان)"
+
+#: includes/backend/connection-test.php:20
+msgid "Please add your Google Apps Scripts url."
+msgstr "لطفا آدرس اسکریپت گوگل شیت خود را وارد کنید."
+
+#: templates/dynamic-fields.php:57
+msgid "Post ID"
+msgstr "آیدی پست"
+
+#: templates/sheet-options.php:28
+msgid "Require successful payment before sending to Sheets."
+msgstr "نیاز به پرداخت موفق قبل از ارسال به شیت"
+
+#: templates/fields-mapping.php:148
+msgid "Save Fields"
+msgstr "ذخیره فیلدها"
+
+#: templates/sheet-options.php:33
+msgid "Save Options"
+msgstr "ذخیره گزینه‌ها"
+
+#: templates/fields-mapping.php:41
+msgid "Send to Sheet"
+msgstr "ارسال به شیت"
+
+#: includes/backend/connection-test.php:60
+#, php-format
+msgid "Something went wrong! Error code: %s"
+msgstr "خطایی رخ داده است. کد خطا: %s"
+
+#: templates/sheet-options.php:11 templates/fields-mapping.php:37
+msgid "Something went wrong, please try again."
+msgstr "خطایی رخ داده است، لطفا دوباره تلاش کنید"
+
+#: templates/dynamic-fields.php:37
+msgid "Source URL"
+msgstr "آدرس منبع"
+
+#: templates/sheet-options.php:19
+msgid "Temporary pause sending to sheets."
+msgstr "توقف موقت ارسال به شیت."
+
+#: templates/connection-test.php:10
+msgid "Test Connection"
+msgstr "تست اتصال"
+
+#: templates/dynamic-fields.php:81
+msgid "Time Created (Only Time)"
+msgstr "زمان ایجاد (فقط زمان)"
+
+#: templates/dynamic-fields.php:41
+msgid "Transaction ID"
+msgstr "شماره تراکنش"
+
+#: includes/backend/fields-mapping.php:32
+msgid "Unable to retrieve the form."
+msgstr "مشکل در گرفتن فرم."
+
+#: templates/dynamic-fields.php:61
+msgid "User Agent"
+msgstr "User Agent"
+
+#: templates/dynamic-fields.php:65
+msgid "User IP"
+msgstr "آیپی کاربر"
+
+#: templates/integration-guide.php:43
+msgid "Video Guide"
+msgstr "راهنمای ویدیویی"
