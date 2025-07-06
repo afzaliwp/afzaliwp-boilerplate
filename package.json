@@ -50,6 +50,7 @@
     "tailwindcss": "^4.1.7"
   },
   "dependencies": {
+    "gulp-javascript-obfuscator": "^1.1.6",
     "npm": "^10.8.1",
     "postcss-scss": "^4.0.9",
     "swiper": "^11.0.4"

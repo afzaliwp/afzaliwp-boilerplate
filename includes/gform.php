@@ -21,9 +21,10 @@ class GForm {
 		if ( empty( $form[ 'gsheets_webhook' ] ) ) {
 			return false;
 		}
-		if ( rgar( $form, 'gsheets_require_payment' ) && ! $this->is_payment_complete( $entry ) ) {
-			return false;
-		}
+
+//		if ( rgar( $form, 'gsheets_require_payment' ) && ! $this->is_payment_complete( $entry ) ) {
+//			return false;
+//		}
 
 		return true;
 	}
@@ -32,6 +33,7 @@ class GForm {
 	 * Maybe send (and prevent duplicates).
 	 */
 	public function maybe_send_data( array $entry, array $form ) {
+		mylog($this->can_send( $entry, $form ), '$this->can_send( $entry, $form )');
 		if ( ! $this->can_send( $entry, $form ) ) {
 			return;
 		}
@@ -41,7 +43,6 @@ class GForm {
 		}
 
 		$this->send_to_sheets( $entry, $form );
-		$this->mark_as_sent( $entry[ 'id' ] );
 	}
 
 	/**
@@ -78,22 +79,18 @@ class GForm {
 			$order = intval( $item[ 'order' ] ?? 999 );
 			$key   = $this->unique_key( $combined, $order );
 
-			// Determine the value: dynamic‐token? static? or entry‐field?
 			$raw = trim( $item[ 'value' ] ?? '' );
 
 			if ( $raw !== '' ) {
-				// explicit value provided
 				if ( $this->is_dynamic_token( $raw ) ) {
 					$value = $this->resolve_dynamic_token( $raw, $entry );
 				} else {
 					$value = $raw;
 				}
 			} else {
-				// no explicit value → pull from entry
 				$value = rgar( $entry, $item[ 'id' ] );
 			}
 
-			// Header label: custom label if set, else GF field label
 			$header = ! empty( $item[ 'label' ] )
 				? $item[ 'label' ]
 				: $this->get_label( $form, $item[ 'id' ] );
@@ -104,23 +101,51 @@ class GForm {
 			];
 		}
 
-		// sort by numeric order
 		uksort( $combined, function ( $a, $b ) {
 			return $this->extract_order( $a ) <=> $this->extract_order( $b );
 		} );
 
-		// build and send payload
 		$payload = [];
 		foreach ( $combined as $key => $col ) {
 			$payload[ $key ]            = $col[ 'value' ];
 			$payload[ 'label_' . $key ] = $col[ 'header' ];
 		}
 
-		wp_remote_post( $webhook, [
-			'body'      => $payload,
+		mylog($payload);
+
+		$response = wp_remote_post( $webhook, [
+			'body'      => wp_json_encode( $payload ),
+			'headers'   => [ 'Content-Type' => 'application/json' ],
 			'timeout'   => 15,
 			'sslverify' => false,
 		] );
+
+		$code = wp_remote_retrieve_response_code( $response );
+		$body = wp_remote_retrieve_body( $response );
+		$json = json_decode( $body, true );
+
+		$api_success = is_array($json) && ! empty( $json['success'] );
+
+		$status = $api_success
+			? "OK (HTTP {$code})"
+			: "ERROR (HTTP {$code})";
+
+		$message = is_array($json) && isset($json['message'])
+			? $json['message']
+			: wp_strip_all_tags( $body );
+
+		if ( $api_success ) {
+			$this->mark_as_sent( $entry['id'] );
+		}
+
+		\GFFormsModel::add_note(
+			$entry['id'],
+			0,
+			'Google Sheets Sync',
+			sprintf( 'Sheets Sync %s: %s', $status, $message )
+		);
+
+
 	}
 
 	/**

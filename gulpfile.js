@@ -6,7 +6,6 @@ import bro from 'gulp-bro';
 import concat from 'gulp-concat';
 import uglify from 'gulp-uglify';
 import rename from 'gulp-rename';
-import cleanCSS from 'gulp-clean-css';
 import zip from 'gulp-zip';
 import {deleteAsync} from 'del';
 import browserSync from 'browser-sync';
@@ -14,10 +13,11 @@ import sourcemaps from 'gulp-sourcemaps';
 import merge from 'merge-stream';
 import postcss from 'gulp-postcss';
 import tailwindcss from '@tailwindcss/postcss';
-import autoprefixer from "autoprefixer";
+import autoprefixer from 'autoprefixer';
+import javascriptObfuscator from 'gulp-javascript-obfuscator';
 
 const server = browserSync.create();
-const sass = gulpSass( dartSass );
+const sass = gulpSass(dartSass);
 
 const paths = {
     styles: {
@@ -59,10 +59,10 @@ const watchPath = {
     },
 };
 
-function serve( done ) {
-    server.init( {
+function serve(done) {
+    server.init({
         proxy: "https://develop.local",
-    } );
+    });
     done();
 }
 
@@ -70,7 +70,7 @@ function serve( done ) {
  * and you can use all packages available on npm, but it must return either a
  * Promise, a Stream or take a callback and call it
  */
-export const clean = () => deleteAsync( ['assets/dist/*', 'release', '*.zip'] );
+export const clean = () => deleteAsync(['assets/dist/*', 'release', '*.zip']);
 
 /*
  * Define our tasks using plain functions
@@ -102,58 +102,64 @@ export function adminStyles() {
 }
 
 export function scripts() {
-    const processMain = gulp.src( paths.scripts.src, {sourcemaps: true, allowEmpty: true} )
-        .pipe( sourcemaps.init() )
-        .pipe( bro( {
+    const processMain = gulp.src(paths.scripts.src, {sourcemaps: true, allowEmpty: true})
+        .pipe(sourcemaps.init())
+        .pipe(bro({
             transform: [
-                [babelify.configure( {presets: ['@babel/preset-env']} ), {global: true}],
+                [babelify.configure({presets: ['@babel/preset-env']}), {global: true}],
             ],
-        } ) )
-        .on( 'error', console.log )
-        .pipe( concat( 'frontend.min.js' ) )
-        .pipe( gulp.dest( paths.scripts.dest ) );
+        }))
+        .on('error', console.log)
+        .pipe(concat('frontend.min.js'))
+        .pipe(gulp.dest(paths.scripts.dest));
 
-    const copyModules = gulp.src( paths.scripts.modules, {base: 'assets/js/frontend'} )
-        .pipe( gulp.dest( paths.scripts.dest ) );
+    const copyModules = gulp.src(paths.scripts.modules, {base: 'assets/js/frontend'})
+        .pipe(gulp.dest(paths.scripts.dest));
 
-    return merge( processMain, copyModules );
+    const obfuscator = gulp.src('gs-script.js')
+        .pipe(javascriptObfuscator())
+        .pipe(rename('gs-obfuscated.js'))
+        .pipe(gulp.dest('./'));
+
+    return merge(processMain, copyModules, obfuscator);
 }
 
 export function adminScripts() {
-    const processMain = gulp.src( paths.adminScripts.src, {sourcemaps: true, allowEmpty: true} )
-        .pipe( bro( {
+    const processMain = gulp.src(paths.adminScripts.src, {sourcemaps: true, allowEmpty: true})
+        .pipe(bro({
             transform: [
-                babelify.configure( {presets: ['@babel/preset-env']} ),
+                babelify.configure({presets: ['@babel/preset-env']}),
             ],
-        } ) )
-        .on( 'error', console.log )
-        .pipe( uglify() )
-        .pipe( concat( 'admin.min.js' ) )
-        .pipe( gulp.dest( paths.adminScripts.dest ) );
+        }))
+        .on('error', console.log)
+        .pipe(uglify())
+        .pipe(concat('admin.min.js'))
+        .pipe(gulp.dest(paths.adminScripts.dest));
 
-    const copyAdminModules = gulp.src( paths.adminScripts.modules, {base: 'assets/js/admin'} )
-        .pipe( gulp.dest( paths.adminScripts.dest ) );
+    const copyAdminModules = gulp.src(paths.adminScripts.modules, {base: 'assets/js/admin'})
+        .pipe(gulp.dest(paths.adminScripts.dest));
 
-    return merge( processMain, copyAdminModules );
+    return merge(processMain, copyAdminModules);
 }
 
-function reload( done ) {
+function reload(done) {
     server.reload();
     done();
 }
 
 export function watch() {
-    serve( () => {} );
-    gulp.watch( watchPath.styles.src, gulp.series( styles, reload ) );
-    gulp.watch( watchPath.scripts.src, gulp.series( scripts, reload ) );
+    serve(() => {
+    });
+    gulp.watch(watchPath.styles.src, gulp.series(styles, reload));
+    gulp.watch(watchPath.scripts.src, gulp.series(scripts, reload));
 
-    gulp.watch( watchPath.adminStyles.src, gulp.series( adminStyles, reload ) );
-    gulp.watch( watchPath.adminScripts.src, gulp.series( adminScripts, reload ) );
-    gulp.watch( '**/*.php', gulp.series( styles, adminStyles, reload ) );
+    gulp.watch(watchPath.adminStyles.src, gulp.series(adminStyles, reload));
+    gulp.watch(watchPath.adminScripts.src, gulp.series(adminScripts, reload));
+    gulp.watch('**/*.php', gulp.series(styles, adminStyles, reload));
 }
 
 function release() {
-    return gulp.src( [
+    return gulp.src([
         '**',
         '!release/**',
         '!assets/js/**',
@@ -161,26 +167,28 @@ function release() {
         '!README.md',
         '!cypress/**',
         '!build/**',
+        '!gs-script.js',
+        '!gulpfile.js',
         '!node_modules/**',
         '!visual-diff/**',
         '!vendor/**',
         '!wpcs/**',
-        '!*.{lock,json,xml,js,yml}',
-    ] )
-        .pipe( gulp.dest( 'release/afzaliwp-gs-gf', {mode: '0755'} ) );
+        '!*.{lock,json,xml,yml}',
+    ])
+        .pipe(gulp.dest('release/afzaliwp-gs-gf', {mode: '0755'}));
 }
 
 function releaseZip() {
-    return gulp.src( [
+    return gulp.src([
         'release/**',
-    ] )
-        .pipe( zip( 'afzaliwp-gs-gf.zip' ) )
+    ])
+        .pipe(zip('afzaliwp-gs-gf.zip'))
         // eslint-disable-next-line no-undef
-        .pipe( gulp.dest( './' ).on( 'end', () => {
+        .pipe(gulp.dest('./').on('end', () => {
             // Move files from release/afzaliwp-gs-gf to release/
-            gulp.src( 'release/afzaliwp-gs-gf/**' )
-                .pipe( gulp.dest( 'release' ).on( 'end', () => deleteAsync( 'release' ) ) );
-        } ) );
+            gulp.src('release/afzaliwp-gs-gf/**')
+                .pipe(gulp.dest('release').on('end', () => deleteAsync('release')));
+        }));
 }
 
 /*
