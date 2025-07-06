@@ -26,9 +26,9 @@ $gs_code    = $controller->get_gs_code();
 	</div>
 
 	<div class="p-4 rounded-lg bg-[#151E30] max-w-200">
-		<pre id="gs-script-code" class="text-white-200 text-wrap overflow-x-hidden overflow-y-scroll max-h-50">
-			<?php echo esc_html( $gs_code ); ?>
-		</pre>
+		<pre id="gs-script-code"
+             class="text-white-200 text-wrap overflow-x-hidden overflow-y-scroll max-h-50"
+        ><?php echo esc_html( $gs_code ); ?></pre>
 	</div>
 	<ol class="text-black-300 body2 mt-4">
 		<li><?php _e('Create a new Google Sheet', 'afzaliwp-gs'); ?></li>
