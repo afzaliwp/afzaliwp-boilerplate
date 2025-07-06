@@ -32,12 +32,16 @@ $form    = \GFAPI::get_form( $form_id );
                 <button type="button" class="tab-button" data-tab="integration_guide">
 					<?php _e( 'Integration Guide', 'afzaliwp-gs' ); ?>
                 </button>
+                <button type="button" class="tab-button" data-tab="sheet_options">
+					<?php _e( 'Options', 'afzaliwp-gs' ); ?>
+                </button>
             </div>
 
             <div class="contents">
 				<?php include_once AFZALIWP_GS_TPL_DIR . 'connection-test.php'; ?>
 				<?php include_once AFZALIWP_GS_TPL_DIR . 'fields-mapping.php'; ?>
 				<?php include_once AFZALIWP_GS_TPL_DIR . 'integration-guide.php'; ?>
+				<?php include_once AFZALIWP_GS_TPL_DIR . 'sheet-options.php'; ?>
             </div>
         </div>
     </main>

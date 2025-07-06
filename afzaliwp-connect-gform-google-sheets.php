@@ -15,6 +15,7 @@ namespace AfzaliWP;
 use AfzaliWP\GS_Gravity\Includes\Backend\Connection_Test;
 use AfzaliWP\GS_Gravity\Includes\Backend\Fields_Mapping;
 use AfzaliWP\GS_Gravity\Includes\Backend\Options;
+use AfzaliWP\GS_Gravity\Includes\Backend\Sheet_Options;
 use AfzaliWP\GS_Gravity\Includes\GForm;
 use Exception;
 
@@ -134,6 +135,7 @@ final class GS_Gravity {
 		new Options();
 		new Connection_Test();
 		new Fields_Mapping();
+		new Sheet_Options();
 	}
 
 	private function handle_frontend() {

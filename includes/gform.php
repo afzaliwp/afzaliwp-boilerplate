@@ -22,9 +22,13 @@ class GForm {
 			return false;
 		}
 
-//		if ( rgar( $form, 'gsheets_require_payment' ) && ! $this->is_payment_complete( $entry ) ) {
-//			return false;
-//		}
+		if ( 'true' === $form[ 'pause-sending' ] ) {
+			return false;
+		}
+
+		if ( 'true' === $form[ 'require-payment' ] && ! $this->is_payment_complete( $entry ) ) {
+			return false;
+		}
 
 		return true;
 	}
@@ -33,7 +37,6 @@ class GForm {
 	 * Maybe send (and prevent duplicates).
 	 */
 	public function maybe_send_data( array $entry, array $form ) {
-		mylog($this->can_send( $entry, $form ), '$this->can_send( $entry, $form )');
 		if ( ! $this->can_send( $entry, $form ) ) {
 			return;
 		}
@@ -111,8 +114,6 @@ class GForm {
 			$payload[ 'label_' . $key ] = $col[ 'header' ];
 		}
 
-		mylog($payload);
-
 		$response = wp_remote_post( $webhook, [
 			'body'      => wp_json_encode( $payload ),
 			'headers'   => [ 'Content-Type' => 'application/json' ],
@@ -124,27 +125,26 @@ class GForm {
 		$body = wp_remote_retrieve_body( $response );
 		$json = json_decode( $body, true );
 
-		$api_success = is_array($json) && ! empty( $json['success'] );
+		$api_success = is_array( $json ) && ! empty( $json[ 'success' ] );
 
 		$status = $api_success
 			? "OK (HTTP {$code})"
 			: "ERROR (HTTP {$code})";
 
-		$message = is_array($json) && isset($json['message'])
-			? $json['message']
+		$message = is_array( $json ) && isset( $json[ 'message' ] )
+			? $json[ 'message' ]
 			: wp_strip_all_tags( $body );
 
 		if ( $api_success ) {
-			$this->mark_as_sent( $entry['id'] );
+			$this->mark_as_sent( $entry[ 'id' ] );
 		}
 
 		\GFFormsModel::add_note(
-			$entry['id'],
+			$entry[ 'id' ],
 			0,
 			'Google Sheets Sync',
 			sprintf( 'Sheets Sync %s: %s', $status, $message )
 		);
-
 
 	}
 

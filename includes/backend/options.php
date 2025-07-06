@@ -24,7 +24,6 @@ class Options {
 
 	public function render_settings() {
 		GFFormSettings::page_header();
-		$options = [ 12, 34, 56 ];
 		require_once AFZALIWP_GS_DIR . 'templates/options.php';
 		GFFormSettings::page_footer();
 	}
